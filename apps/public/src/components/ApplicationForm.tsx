@@ -12,6 +12,11 @@ const applicationSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().min(1, "Phone number is required"),
   country: z.string().min(1, "Please select your country"),
+  resumeUrl: z
+    .string()
+    .url("Please enter a valid URL")
+    .optional()
+    .or(z.literal("")),
   linkedinUrl: z
     .string()
     .url("Please enter a valid URL")
@@ -48,8 +53,6 @@ export function ApplicationForm({ jobId, jobTitle }: ApplicationFormProps) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [submittedEmail, setSubmittedEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [resumeFile, setResumeFile] = useState<File | null>(null);
-  const [resumeError, setResumeError] = useState<string | null>(null);
 
   const {
     register,
@@ -66,56 +69,11 @@ export function ApplicationForm({ jobId, jobTitle }: ApplicationFormProps) {
   const whyInterestedLength = watch("whyInterested")?.length || 0;
   const relevantExperienceLength = watch("relevantExperience")?.length || 0;
 
-  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setResumeError(null);
-
-    if (!file) {
-      setResumeFile(null);
-      return;
-    }
-
-    if (file.type !== "application/pdf") {
-      setResumeError("Please upload a PDF file");
-      setResumeFile(null);
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      setResumeError("File size must be less than 5MB");
-      setResumeFile(null);
-      return;
-    }
-
-    setResumeFile(file);
-  };
-
   const onSubmit = async (data: ApplicationFormData) => {
-    if (!resumeFile) {
-      setResumeError("Please upload your resume");
-      return;
-    }
-
     setIsSubmitting(true);
     setError(null);
 
     try {
-      // Upload resume first
-      const formData = new FormData();
-      formData.append("file", resumeFile);
-
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!uploadRes.ok) {
-        throw new Error("Failed to upload resume");
-      }
-
-      const { url: resumeUrl } = await uploadRes.json();
-
-      // Submit application
       const res = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -125,7 +83,7 @@ export function ApplicationForm({ jobId, jobTitle }: ApplicationFormProps) {
           email: data.email,
           phone: data.phone,
           country: data.country,
-          resumeUrl,
+          resumeUrl: data.resumeUrl || null,
           linkedinUrl: data.linkedinUrl || null,
           portfolioUrl: data.portfolioUrl || null,
           whyInterested: data.whyInterested,
@@ -285,35 +243,32 @@ export function ApplicationForm({ jobId, jobTitle }: ApplicationFormProps) {
         </div>
       </div>
 
-      {/* Section 2 - Experience */}
+      {/* Section 2 - Links */}
       <div>
-        <h3 className="text-lg font-semibold text-slate-900 mb-4">Experience</h3>
+        <h3 className="text-lg font-semibold text-slate-900 mb-4">Your Links</h3>
         <div className="space-y-4">
-          <div>
-            <label
-              htmlFor="resume"
-              className="block text-sm font-medium text-slate-700 mb-1"
-            >
-              Resume (PDF, max 5MB) <span className="text-red-500">*</span>
-            </label>
-            <input
-              type="file"
-              id="resume"
-              accept=".pdf,application/pdf"
-              onChange={handleResumeChange}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors file:mr-4 file:py-1 file:px-4 file:rounded file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            {resumeFile && (
-              <p className="mt-1 text-sm text-green-600">
-                Selected: {resumeFile.name}
-              </p>
-            )}
-            {resumeError && (
-              <p className="mt-1 text-sm text-red-600">{resumeError}</p>
-            )}
-          </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="resumeUrl"
+                className="block text-sm font-medium text-slate-700 mb-1"
+              >
+                Resume URL (Google Drive, Dropbox, etc.)
+              </label>
+              <input
+                type="url"
+                id="resumeUrl"
+                {...register("resumeUrl")}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                placeholder="https://drive.google.com/file/..."
+              />
+              {errors.resumeUrl && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.resumeUrl.message}
+                </p>
+              )}
+            </div>
+
             <div>
               <label
                 htmlFor="linkedinUrl"
@@ -334,27 +289,27 @@ export function ApplicationForm({ jobId, jobTitle }: ApplicationFormProps) {
                 </p>
               )}
             </div>
+          </div>
 
-            <div>
-              <label
-                htmlFor="portfolioUrl"
-                className="block text-sm font-medium text-slate-700 mb-1"
-              >
-                Portfolio Website
-              </label>
-              <input
-                type="url"
-                id="portfolioUrl"
-                {...register("portfolioUrl")}
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                placeholder="https://yourportfolio.com"
-              />
-              {errors.portfolioUrl && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.portfolioUrl.message}
-                </p>
-              )}
-            </div>
+          <div>
+            <label
+              htmlFor="portfolioUrl"
+              className="block text-sm font-medium text-slate-700 mb-1"
+            >
+              Portfolio Website
+            </label>
+            <input
+              type="url"
+              id="portfolioUrl"
+              {...register("portfolioUrl")}
+              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+              placeholder="https://yourportfolio.com"
+            />
+            {errors.portfolioUrl && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.portfolioUrl.message}
+              </p>
+            )}
           </div>
         </div>
       </div>

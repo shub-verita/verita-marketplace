@@ -43,7 +43,7 @@ model Application {
   email              String
   phone              String
   country            String
-  resumeUrl          String
+  resumeUrl          String?
   linkedinUrl        String?
   portfolioUrl       String?
   whyInterested      String            @db.Text
