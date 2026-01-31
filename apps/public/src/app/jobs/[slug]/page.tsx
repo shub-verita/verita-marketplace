@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { prisma } from "@verita/database";
+import { prisma } from "@/lib/db";
 import { formatPayRange } from "@/lib/utils";
 import { relativeDate } from "@/lib/dates";
 import { ApplicationForm } from "@/components/ApplicationForm";

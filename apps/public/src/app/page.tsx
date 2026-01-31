@@ -1,4 +1,4 @@
-import { prisma } from "@verita/database";
+import { prisma } from "@/lib/db";
 import { Logo } from "@/components/Logo";
 import { JobCard } from "@/components/JobCard";
 
