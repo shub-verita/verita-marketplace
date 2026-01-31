@@ -11,15 +11,42 @@ interface JobFormProps {
   onDelete?: () => Promise<void>;
 }
 
-function SubmitButton({ label }: { label: string }) {
+function SubmitButton({
+  label,
+  pendingLabel,
+  value,
+  variant = "primary"
+}: {
+  label: string;
+  pendingLabel: string;
+  value: string;
+  variant?: "primary" | "secondary";
+}) {
   const { pending } = useFormStatus();
+
+  if (variant === "secondary") {
+    return (
+      <button
+        type="submit"
+        name="status"
+        value={value}
+        disabled={pending}
+        className="px-4 py-2 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {pending ? pendingLabel : label}
+      </button>
+    );
+  }
+
   return (
     <button
       type="submit"
+      name="status"
+      value={value}
       disabled={pending}
       className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      {pending ? "Saving..." : label}
+      {pending ? pendingLabel : label}
     </button>
   );
 }
@@ -404,22 +431,17 @@ export function JobForm({ job, action, onDelete }: JobFormProps) {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            type="submit"
-            name="status"
+          <SubmitButton
+            label="Save as Draft"
+            pendingLabel="Saving..."
             value="DRAFT"
-            className="px-4 py-2 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50"
-          >
-            Save as Draft
-          </button>
-          <button
-            type="submit"
-            name="status"
+            variant="secondary"
+          />
+          <SubmitButton
+            label={job?.status === "PUBLISHED" ? "Update" : "Publish"}
+            pendingLabel="Publishing..."
             value="PUBLISHED"
-            className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
-          >
-            {job?.status === "PUBLISHED" ? "Update" : "Publish"}
-          </button>
+          />
         </div>
       </div>
     </form>
