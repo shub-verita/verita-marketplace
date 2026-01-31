@@ -1,6 +1,9 @@
 {
   "name": "verita-marketplace",
   "private": true,
+  "prisma": {
+    "schema": "packages/database/prisma/schema.prisma"
+  },
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",

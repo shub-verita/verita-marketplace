@@ -2,6 +2,9 @@
   "name": "@verita/database",
   "version": "0.0.0",
   "private": true,
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
