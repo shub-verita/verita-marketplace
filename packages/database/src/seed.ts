@@ -7,14 +7,14 @@ async function main() {
   console.log("Seeding database...");
 
   // Create admin user
-  const adminPassword = await hash("changeme123", 12);
+  const adminPassword = await hash("ILoveVerita", 12);
   const admin = await prisma.user.upsert({
-    where: { email: "admin@verita.ai" },
+    where: { email: "shub@verita-ai.com" },
     update: { passwordHash: adminPassword },
     create: {
-      email: "admin@verita.ai",
+      email: "shub@verita-ai.com",
       passwordHash: adminPassword,
-      name: "Admin",
+      name: "Shubham",
       role: "ADMIN",
     },
   });
