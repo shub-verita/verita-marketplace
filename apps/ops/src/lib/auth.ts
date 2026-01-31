@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import { prisma } from "@verita/database";
+import { prisma } from "./db";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [

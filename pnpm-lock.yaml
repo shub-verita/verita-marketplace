@@ -14,6 +14,9 @@ importers:
 
   apps/ops:
     dependencies:
+      '@prisma/client':
+        specifier: ^5.14.0
+        version: 5.22.0(prisma@5.22.0)
       '@verita/database':
         specifier: workspace:*
         version: link:../../packages/database
