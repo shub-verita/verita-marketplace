@@ -11,9 +11,9 @@
     }
   },
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate --schema=./prisma/schema.prisma",
     "build": "tsc",
-    "db:generate": "prisma generate",
+    "db:generate": "prisma generate --schema=./prisma/schema.prisma",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
