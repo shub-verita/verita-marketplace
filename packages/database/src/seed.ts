@@ -10,7 +10,7 @@ async function main() {
   const adminPassword = await hash("changeme123", 12);
   const admin = await prisma.user.upsert({
     where: { email: "admin@verita.ai" },
-    update: {},
+    update: { passwordHash: adminPassword },
     create: {
       email: "admin@verita.ai",
       passwordHash: adminPassword,
@@ -24,7 +24,7 @@ async function main() {
   const opsPassword = await hash("verita123", 12);
   const opsUser = await prisma.user.upsert({
     where: { email: "ops@verita.ai" },
-    update: {},
+    update: { passwordHash: opsPassword },
     create: {
       email: "ops@verita.ai",
       passwordHash: opsPassword,
