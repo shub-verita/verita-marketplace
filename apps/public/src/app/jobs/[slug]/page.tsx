@@ -6,6 +6,8 @@ import { relativeDate } from "@/lib/dates";
 import { ApplicationForm } from "@/components/ApplicationForm";
 import type { Metadata } from "next";
 
+export const revalidate = 0; // Always fetch fresh data
+
 interface PageProps {
   params: { slug: string };
 }

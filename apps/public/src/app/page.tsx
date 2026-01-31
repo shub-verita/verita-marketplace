@@ -2,6 +2,8 @@ import { prisma } from "@/lib/db";
 import { Logo } from "@/components/Logo";
 import { JobCard } from "@/components/JobCard";
 
+export const revalidate = 0; // Always fetch fresh data
+
 async function getJobs() {
   const jobs = await prisma.job.findMany({
     where: {
