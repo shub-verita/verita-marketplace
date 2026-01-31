@@ -1,0 +1,12 @@
+{
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm turbo build --filter=@verita/ops",
+  "outputDirectory": ".next",
+  "env": {
+    "DATABASE_URL": "@database-url",
+    "AUTH_SECRET": "@auth-secret",
+    "AUTH_URL": "@auth-url",
+    "AUTH_TRUST_HOST": "true"
+  }
+}

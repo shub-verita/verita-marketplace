@@ -1,0 +1,35 @@
+{
+  "name": "@verita/ops",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@verita/database": "workspace:*",
+    "bcryptjs": "^3.0.3",
+    "lucide-react": "^0.563.0",
+    "next": "14.2.3",
+    "next-auth": "5.0.0-beta.30",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.3.2",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.5"
+  },
+  "comments": {
+    "note": "NextAuth will be needed for authentication - install with: pnpm add next-auth@beta"
+  }
+}

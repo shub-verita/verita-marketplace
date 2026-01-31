@@ -1,0 +1,9 @@
+{
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm turbo build --filter=@verita/public",
+  "outputDirectory": ".next",
+  "env": {
+    "DATABASE_URL": "@database-url"
+  }
+}
