@@ -138,21 +138,22 @@ export default async function ApplicationPage({ params }: ApplicationPageProps) 
             </div>
 
             {/* Resume */}
-            <div className="bg-white rounded-xl border border-slate-200 p-6">
-              <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                Resume
-              </h2>
-              <a
-                href={application.resumeUrl}
-                download
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                Download Resume
-              </a>
-            </div>
+            {application.resumeUrl && (
+              <div className="bg-white rounded-xl border border-slate-200 p-6">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">
+                  Resume
+                </h2>
+                <a
+                  href={application.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  View Resume
+                </a>
+              </div>
+            )}
 
             {/* Responses */}
             <div className="bg-white rounded-xl border border-slate-200 p-6">
